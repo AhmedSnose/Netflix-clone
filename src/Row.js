@@ -3,11 +3,13 @@ import YouTube from 'react-youtube'
 import axios from './axios'
 import './Row.css'
 import movieTralier from "movie-trailer"
+import LoadingSpinner from './UI/LoadingSpinner'
+
 const base_url = "https://image.tmdb.org/t/p/original/"
 
 
 export default function Row({fetchUrl , title ,isLargRow}) {
-
+const [isLoding , setIsloding] = useState(false)
 
     const [movies , setMoives] = useState([])
     const [trailerUrl , setTrailerUrl] = useState('')
@@ -15,10 +17,12 @@ export default function Row({fetchUrl , title ,isLargRow}) {
 
 
     useEffect(()=>{
+        setIsloding(true)
+
        async function fetchData(){
            const request = await axios.get(fetchUrl)
            setMoives(request.data.results);
-
+           setIsloding(false)
            return request
        }
        fetchData() 
@@ -45,7 +49,12 @@ export default function Row({fetchUrl , title ,isLargRow}) {
             }).catch((error) => alert("the trailer Url is not available now , Try another Moive"))
         }
     }
-    
+    if(isLoding) {
+        return (      
+                <LoadingSpinner /> 
+    )
+    }
+
     return (
         <div className="row">
               <h2> {title} </h2>
