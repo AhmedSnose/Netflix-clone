@@ -1,11 +1,22 @@
-import React from 'react'
-import Row from './Row'
+// import Row from './Row'
 import requests from './request'
+// import Banner from './Banner'
+// import Nav from './Nav'
 import "./App.css"
-import Banner from './Banner'
-import Nav from './Nav'
+import React , {Suspense} from 'react';
+import LoadingSpinner from './UI/LoadingSpinner'
+
+const Row = React.lazy(()=> import('./Row'))
+const Banner = React.lazy(()=> import('./Banner'))
+const Nav =  React.lazy(()=> import('./Nav'))
+
 export default function App() {
   return (
+    <Suspense fallback={
+      <div className='centered'>
+        <LoadingSpinner />
+      </div>
+    }>
     <div className="App">
         <Nav />
         <Banner />
@@ -21,5 +32,7 @@ export default function App() {
 
 
     </div>
+    </Suspense>
+
   )
 }
